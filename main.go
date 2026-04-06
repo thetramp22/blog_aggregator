@@ -1,15 +1,19 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
 
+	_ "github.com/lib/pq"
 	"github.com/thetramp22/blog_aggregator/internal/config"
+	"github.com/thetramp22/blog_aggregator/internal/database"
 )
 
 type state struct {
-	config *config.Config
+	db  *database.Queries
+	cfg *config.Config
 }
 
 func main() {
@@ -18,14 +22,24 @@ func main() {
 		log.Fatalf("Error reading config: %v", err)
 	}
 
+	dbURL := cfg.DbURL
+	db, err := sql.Open("postgres", dbURL)
+	if err != nil {
+		log.Fatalf("Error reading database: %v", err)
+	}
+
+	dbQueries := database.New(db)
+
 	programState := &state{
-		config: &cfg,
+		db:  dbQueries,
+		cfg: &cfg,
 	}
 
 	cmds := commands{
 		registeredCommands: map[string]func(*state, command) error{},
 	}
 	cmds.register("login", handlerLogin)
+	cmds.register("register", handlerRegister)
 
 	args := os.Args
 	if len(args) < 2 {
@@ -43,5 +57,5 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("%+v\n", programState.config)
+	fmt.Printf("%+v\n", programState.cfg)
 }
