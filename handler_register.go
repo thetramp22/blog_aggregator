@@ -17,8 +17,8 @@ func handlerRegister(s *state, cmd command) error {
 	ctx := context.Background()
 	newUser, err := s.db.CreateUser(ctx, database.CreateUserParams{
 		ID:        uuid.New(),
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
 		Name:      name,
 	})
 	if err != nil {
