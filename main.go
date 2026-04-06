@@ -40,6 +40,9 @@ func main() {
 	}
 	cmds.register("login", handlerLogin)
 	cmds.register("register", handlerRegister)
+	cmds.register("reset", handlerReset)
+	cmds.register("users", handlerUsers)
+	cmds.register("agg", handleAgg)
 
 	args := os.Args
 	if len(args) < 2 {
@@ -57,5 +60,5 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("%+v\n", programState.cfg)
+	// fmt.Printf("%+v\n", programState.cfg)
 }

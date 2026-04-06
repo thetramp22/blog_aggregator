@@ -24,7 +24,10 @@ func handlerRegister(s *state, cmd command) error {
 	if err != nil {
 		return fmt.Errorf("user already exists: %v", err)
 	}
-	s.cfg.CurrentUserName = newUser.Name
+	err = s.cfg.SetUser(newUser.Name)
+	if err != nil {
+		return err
+	}
 	fmt.Printf("user '%v' was created\n", newUser.Name)
 	fmt.Printf("%+v\n", newUser)
 	return nil
