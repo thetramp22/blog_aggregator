@@ -6,7 +6,7 @@ import (
 )
 
 func handlerLogin(s *state, cmd command) error {
-	if len(cmd.args) == 0 {
+	if len(cmd.args) != 1 {
 		return fmt.Errorf("1 argument <username> required")
 	}
 	username := cmd.args[0]

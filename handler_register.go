@@ -10,7 +10,7 @@ import (
 )
 
 func handlerRegister(s *state, cmd command) error {
-	if len(cmd.args) == 0 {
+	if len(cmd.args) != 1 {
 		return fmt.Errorf("1 argument <name> required")
 	}
 	name := cmd.args[0]
