@@ -9,20 +9,19 @@ import (
 	"github.com/thetramp22/blog_aggregator/internal/database"
 )
 
-func handlerFollow(s *state, cmd command) error {
+func handlerFollow(s *state, cmd command, user database.User) error {
 	if len(cmd.args) != 1 {
 		return fmt.Errorf("1 argument <url> required")
 	}
 
 	url := cmd.args[0]
-	ctx := context.Background()
-	user, err := s.db.GetUser(ctx, s.cfg.CurrentUserName)
-	if err != nil {
-		return fmt.Errorf("error getting user: %v", err)
-	}
-	feed, err := s.db.GetFeedByUrl(ctx, url)
 
-	feedFollowed, err := s.db.CreateFeedFollow(ctx, database.CreateFeedFollowParams{
+	feed, err := s.db.GetFeedByUrl(context.Background(), url)
+	if err != nil {
+		return fmt.Errorf("error getting feed: %v", err)
+	}
+
+	feedFollowed, err := s.db.CreateFeedFollow(context.Background(), database.CreateFeedFollowParams{
 		ID:        uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),

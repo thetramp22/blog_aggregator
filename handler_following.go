@@ -3,19 +3,16 @@ package main
 import (
 	"context"
 	"fmt"
+
+	"github.com/thetramp22/blog_aggregator/internal/database"
 )
 
-func handlerFollowing(s *state, cmd command) error {
+func handlerFollowing(s *state, cmd command, user database.User) error {
 	if len(cmd.args) != 0 {
 		return fmt.Errorf("no arguments> required")
 	}
 
-	ctx := context.Background()
-	user, err := s.db.GetUser(ctx, s.cfg.CurrentUserName)
-	if err != nil {
-		return fmt.Errorf("error getting user: %v", err)
-	}
-	feeds, err := s.db.GetFeedFollowsForUser(ctx, user.ID)
+	feeds, err := s.db.GetFeedFollowsForUser(context.Background(), user.ID)
 	if err != nil {
 		return fmt.Errorf("error getting feed follows: %v", err)
 	}
