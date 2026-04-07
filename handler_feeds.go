@@ -42,7 +42,7 @@ func handlerAddfeed(s *state, cmd command, user database.User) error {
 
 	fmt.Printf("feed '%v' was created\n", feed.Name)
 	printFeed(feed, user)
-	fmt.Printf("feed '%v' was followed\n", feedFollow.UserName)
+	fmt.Printf("feed '%v' was followed\n", feedFollow.FeedName)
 
 	return nil
 }
